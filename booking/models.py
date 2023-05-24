@@ -71,7 +71,7 @@ class Employee(models.Model):
 @receiver(pre_delete, sender=Employee)
 def delete_photo(sender, instance, **kwargs):
     instance.photo.delete()
-    
+
 
 class Appointment(models.Model):
     service = models.ForeignKey(
@@ -88,6 +88,9 @@ class Appointment(models.Model):
     )
     date = models.DateField('Дата записи')
     time = models.TimeField('Время записи')
+    name = models.CharField('Имя клиента', max_length=100)
+    phonenumber = models.CharField('Телефон клиента', max_length=20)
+    comment = models.TextField('Комментарий клиента', blank=True)
 
     class Meta:
         ordering = ['-date', '-time']
