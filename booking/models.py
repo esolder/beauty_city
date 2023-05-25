@@ -1,6 +1,9 @@
+from datetime import date
+from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
@@ -28,6 +31,11 @@ class Service(models.Model):
         decimal_places=2,
         max_digits=10,
     )
+    image = models.ImageField(
+        'Изображение',
+        blank=True,
+    )
+
 
     class Meta:
         verbose_name = 'Услуга'
@@ -66,12 +74,19 @@ class Employee(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+    def experience(self):
+        today = date.today()
+        experience_delta = relativedelta(today, self.start_work_date)
+        years = experience_delta.years
+        months = experience_delta.months
+        return f'{years} г. {months} мес.'
     
 
 @receiver(pre_delete, sender=Employee)
 def delete_photo(sender, instance, **kwargs):
     instance.photo.delete()
-    
+
 
 class Appointment(models.Model):
     service = models.ForeignKey(
@@ -88,6 +103,9 @@ class Appointment(models.Model):
     )
     date = models.DateField('Дата записи')
     time = models.TimeField('Время записи')
+    name = models.CharField('Имя клиента', max_length=100)
+    phonenumber = PhoneNumberField('Телефон клиента', max_length=20)
+    comment = models.TextField('Комментарий клиента', blank=True)
 
     class Meta:
         ordering = ['-date', '-time']
