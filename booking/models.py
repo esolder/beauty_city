@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
@@ -103,7 +104,7 @@ class Appointment(models.Model):
     date = models.DateField('Дата записи')
     time = models.TimeField('Время записи')
     name = models.CharField('Имя клиента', max_length=100)
-    phonenumber = models.CharField('Телефон клиента', max_length=20)
+    phonenumber = PhoneNumberField('Телефон клиента', max_length=20)
     comment = models.TextField('Комментарий клиента', blank=True)
 
     class Meta:
