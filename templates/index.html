@@ -37,11 +37,11 @@
 							<nav>
 								<ul class="mobMenu__menu">
 									<li class="mobMenu__menu_item">
-										<a href="#" class="mobMenu__menu_link">Мастера</a>
+										<a href="#masters" class="mobMenu__menu_link">Мастера</a>
 									</li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Услуги</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Отзывы</a></li>
-									<li class="mobMenu__menu_item"><a href="#" class="mobMenu__menu_link">Контакты</a></li>
+									<li class="mobMenu__menu_item"><a href="#services" class="mobMenu__menu_link">Услуги</a></li>
+									<li class="mobMenu__menu_item"><a href="#reviews" class="mobMenu__menu_link">Отзывы</a></li>
+									<li class="mobMenu__menu_item"><a href="#contacts" class="mobMenu__menu_link">Контакты</a></li>
 								</ul>
 							</nav>
 							<a href="#" class="mobMenu__account">Личный кабинет</a>
@@ -71,10 +71,10 @@
 					<div class="col-md-5 ">
 						<nav>
 						<ul class="menu">
-							<li class="menu__item"><a href="#" class="menu__item_link">Мастера</a></li>
-							<li class="menu__item"><a href="#" class="menu__item_link">Услуги</a></li>
-							<li class="menu__item"><a href="#" class="menu__item_link">Отзывы</a></li>
-							<li class="menu__item"><a href="#" class="menu__item_link">Контакты</a></li>
+							<li class="menu__item"><a href="#masters" class="menu__item_link">Мастера</a></li>
+							<li class="menu__item"><a href="#services" class="menu__item_link">Услуги</a></li>
+							<li class="menu__item"><a href="#reviews" class="menu__item_link">Отзывы</a></li>
+							<li class="menu__item"><a href="#contacts" class="menu__item_link">Контакты</a></li>
 						</ul>
 					</nav>
 					</div>
@@ -167,7 +167,7 @@
 
 				<div class="row mastersSlider">
 					{% for employee in employees %}
-						<div class="col-md-6">
+						<div class="col-md-3">
 							<div class="cardBlock masters__block">
 								<div class="masters__header fic">
 									<img src="{{ employee.photo.url }}" alt="master" class="masters__header_img" style="max-width: 100px; max-height: 100px;">
@@ -324,23 +324,11 @@
 							<div class="contacts__location fic">
 								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
 								<div class="contacts__location_info">
-									<div class="contacts__location_intro">ул. Пушкинская, д. 78А</div>
-								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
-								</div>
-							</div>
-							<div class="contacts__location fic">
-								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
-								<div class="contacts__location_info">
 									<div class="contacts__location_intro">ул. Красная, д. 10</div>
 								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
 								</div>
 							</div>
-							<div class="contacts__location fic">
-								<img src="{% static 'img/location.svg' %}" alt="location" class="contacts__location_icon">
-								<div class="contacts__location_info">
-									<div class="contacts__location_intro">ул. Ленина, д. 211</div>
-								<div class="contacts__location_date">с 10:00 до 20:00  без выходных</div>
-								</div>
+							<div>
 							</div>
 						</div>
 						<div class="contacts__block">
@@ -382,10 +370,10 @@
 						<div class="col-md-5 minMobHide">
 							<nav>
 								<ul class="menu">
-									<li class="menu__item"><a href="#" class="menu__item_link">Мастера</a></li>
-									<li class="menu__item"><a href="#" class="menu__item_link">Услуги</a></li>
-									<li class="menu__item"><a href="#" class="menu__item_link">Отзывы</a></li>
-									<li class="menu__item"><a href="#" class="menu__item_link">Контакты</a></li>
+									<li class="menu__item"><a href="#masters" class="menu__item_link">Мастера</a></li>
+									<li class="menu__item"><a href="#services" class="menu__item_link">Услуги</a></li>
+									<li class="menu__item"><a href="#reviews" class="menu__item_link">Отзывы</a></li>
+									<li class="menu__item"><a href="#contacts" class="menu__item_link">Контакты</a></li>
 								</ul>
 							</nav>
 						</div>
@@ -405,10 +393,10 @@
 							<div class="col-md-5 minMobShow">
 								<nav>
 									<ul class="menu">
-										<li class="menu__item"><a href="#" class="menu__item_link">Мастера</a></li>
-										<li class="menu__item"><a href="#" class="menu__item_link">Услуги</a></li>
-										<li class="menu__item"><a href="#" class="menu__item_link">Отзывы</a></li>
-										<li class="menu__item"><a href="#" class="menu__item_link">Контакты</a></li>
+										<li class="menu__item"><a href="#masters" class="menu__item_link">Мастера</a></li>
+										<li class="menu__item"><a href="#services" class="menu__item_link">Услуги</a></li>
+										<li class="menu__item"><a href="#reviews" class="menu__item_link">Отзывы</a></li>
+										<li class="menu__item"><a href="#contacts" class="menu__item_link">Контакты</a></li>
 									</ul>
 								</nav>
 							</div>
