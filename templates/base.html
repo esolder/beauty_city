@@ -141,7 +141,7 @@
 							</div>
 						</div>
 					</div>
-					<hr class="hr"></hr>
+					<hr class="hr">
 					<div class="footer__bottom">
 						<div class="row">
 							<div class="col-md-4 col-lg-3">
@@ -179,7 +179,9 @@
 				</div>
 				<div class="contacts__form_checkboxBlock fic">
 					<input type="checkbox" class="contacts__form_checkbox" checked="">
-					<span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфидециоальности</span>
+					<span class="contacts__form_checkboxBlock__intro">
+  						Я согласен(а) с <a href="#" class="policy-link">политикой конфиденциальности</a>
+					</span>
 				</div>
 				<button type="submit" class="popup__btn authPopup__btn">Отправить</button>
 			</form>
@@ -215,12 +217,15 @@
 				</div>
 				<div class="contacts__form_checkboxBlock fic">
 					<input type="checkbox" class="contacts__form_checkbox" checked="">
-					<span class="contacts__form_checkboxBlock__intro">Я согласен(а) с политикой конфидециоальности</span>
+					<span class="contacts__form_checkboxBlock__intro">
+  						Я согласен(а) с <a href="#" class="policy-link">политикой конфиденциальности</a>
+					</span>
 				</div>
 				<button type="submit" class="popup__btn authPopup__btn">Отправить</button>
 			</form>
 		</div>
 	</div>
+
 	<div style="display: none;">
 		<div class="box-modal confirmPopup popup" id="thanksModal">
 			<div class="box-modal_close arcticmodal-close"><img src="{% static 'img/x.svg' %}" alt="x"></div>
@@ -229,6 +234,41 @@
 		</div>
 	</div>
 
+	<div style="display: none;">
+		<div class="box-modal authPopup popup" id="footer__linkModal">
+			<div class="box-modal_close arcticmodal-close">
+				<img src="{% static 'img/x.svg' %}" alt="x">
+			</div>
+			<div class="popup__title authPopup__title">Политика конфиденциальности</div>
+			<div class="popup__text authPopup__text">
+				<p>На этой странице мы описываем, как салон красоты BeautyCity собирает, использует и распространяет информацию, которую вы предоставляете на нашем сайте. Наша политика конфиденциальности применима только к информации, собранной на нашем веб-сайте.</p>
+
+				<h3>Сбор и использование информации</h3>
+
+				<p>Мы собираем следующую информацию: имя, адрес электронной почты и номер телефона. Эта информация используется для общения с вами о предоставляемых нами услугах, для записи на прием и отправки уведомлений о вашем бронировании.</p>
+
+				<h3>Общение информации третьим сторонам</h3>
+
+				<p>Мы не продаем, обмениваем или передаем вашу личную идентифицирующую информацию третьим сторонам. Мы можем раскрывать вашу информацию, когда мы верим, что это необходимо для соблюдения закона, обеспечения наших прав на сайте или защиты наших или чужих прав, собственности или безопасности.</p>
+
+				<h3>Защита вашей информации</h3>
+
+				<p>Мы принимаем различные меры безопасности для защиты вашей личной информации. Мы используем современные методы шифрования для защиты информации, передаваемой на наш сайт.</p>
+
+				<h3>Согласие</h3>
+
+				<p>Используя наш сайт, вы соглашаетесь с нашей политикой конфиденциальности.</p>
+
+				<h3>Изменения в нашей политике конфиденциальности</h3>
+
+				<p>Если мы решим изменить нашу политику конфиденциальности, мы опубликуем эти изменения на этой странице.</p>
+
+				<h3>Контакты</h3>
+
+				<p>Если у вас есть вопросы по поводу нашей политики конфиденциальности, вы можете связаться с нами по адресу: "Ваша контактная информация"</p>
+			</div>
+		</div>
+	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="{% static 'js/air-datepicker.js' %}"></script>

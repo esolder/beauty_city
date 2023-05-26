@@ -381,6 +381,18 @@ $(document).ready(function() {
 
 	})
 
+	$(document).ready(function() {
+        $('.policy-link').click(function(e) {
+            e.preventDefault();
+            $('#footer__linkModal').arcticmodal();
+        });
+    });
+
+	$('.footer__link').click(function(e) {
+        e.preventDefault();
+        $('#footer__linkModal').arcticmodal();
+    });
+
 	$('#callback_button').on('click', function() {
         $('#call_me_back').arcticmodal();
     });
@@ -404,9 +416,9 @@ $(document).ready(function() {
 	})
 	$(document).ready(function(){
         $('#call_me_back form').on('submit', function(e) {
-            e.preventDefault(); // предотвращает перезагрузку страницы
-            $.arcticmodal('close'); // закрывает текущее модальное окно
-            $('#thanksModal').arcticmodal(); // открывает новое модальное окно
+            e.preventDefault();
+            $.arcticmodal('close');
+            $('#thanksModal').arcticmodal();
         });
     });
 
