@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Service, Specialty, Employee, Appointment
+from .models import Category, Service, Specialty, Employee, Appointment, Review
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -25,3 +25,8 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['id', 'service', 'date', 'time', 'employee']
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    ...

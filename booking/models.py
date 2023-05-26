@@ -111,3 +111,27 @@ class Appointment(models.Model):
         ordering = ['-date', '-time']
         verbose_name = 'Запись'
         verbose_name_plural = 'Записи'
+
+
+class Review(models.Model):
+    name = models.CharField(
+        'Имя клиента',
+        max_length=100,
+    )
+    employee = models.CharField(
+        'Имя сотрудника',
+        max_length=100
+    )
+    rating = models.IntegerField(verbose_name='Оценка')
+    text = models.TextField(
+        verbose_name='Текст отзыва',
+        null=False,
+        default=None,
+    )
+
+    def __str__(self):
+        return f'{self.name} - {self.employee}'
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'

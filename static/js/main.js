@@ -422,6 +422,33 @@ $(document).ready(function() {
         });
     });
 
+    $(document).ready(function(){
+        $('.authPopup__form').on('submit', function(e) {
+            var phoneNumber = $(this).find('input[name="tel"]').val();
+            var phoneRegExp = /^\+7\d{10}$/;
+
+            if (!phoneRegExp.test(phoneNumber)) {
+                e.preventDefault();
+                alert('Введите номер телефона в формате +79999999999');
+            } else {
+                if ($(this).parent().attr('id') === 'call_me_back') {
+                    e.preventDefault();
+                    $.arcticmodal('close');
+                    $('#thanksModal').arcticmodal();
+                } else {
+                    e.preventDefault();
+                    $('#confirmModal').arcticmodal();
+                }
+            }
+        });
+    });
+
+    $('.review__link').click(function(e) {
+      e.preventDefault();
+      window.location.href = $(this).attr('href');
+    });
+
+
 	//service
 	$('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
 		e.preventDefault()
