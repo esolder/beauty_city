@@ -381,6 +381,10 @@ $(document).ready(function() {
 
 	})
 
+	$('#callback_button').on('click', function() {
+        $('#call_me_back').arcticmodal();
+    });
+
 	$('.rewiewPopupOpen').click(function(e) {
 		e.preventDefault()
 		$('#reviewModal').arcticmodal();
@@ -394,10 +398,17 @@ $(document).ready(function() {
 		$('#tipsModal').arcticmodal();
 	})
 	
-	$('.authPopup__form').submit(function() {
-		$('#confirmModal').arcticmodal();
-		return false
+	$('.authPopup__form:not(#call_me_back form)').submit(function() {
+        $('#confirmModal').arcticmodal();
+        return false
 	})
+	$(document).ready(function(){
+        $('#call_me_back form').on('submit', function(e) {
+            e.preventDefault(); // предотвращает перезагрузку страницы
+            $.arcticmodal('close'); // закрывает текущее модальное окно
+            $('#thanksModal').arcticmodal(); // открывает новое модальное окно
+        });
+    });
 
 	//service
 	$('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
@@ -412,7 +423,5 @@ $(document).ready(function() {
 			$('.time__btns_next').addClass('active')
 		}
 	})
-	
-
 
 })
