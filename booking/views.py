@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from .models import Review, Category, Employee
@@ -49,9 +49,14 @@ class SubmitReview(TemplateView):
 
 
 def get_time(request):
-    employee_id = request.GET.get('employee_id')
+    employee_id = request.GET.get('employeeId')
     date = request.GET.get('date')
-    date = datetime.strptime(date, '%d.%m.%Y')
-    employee = Employee.objects.filter(pk=employee_id)
-    available_time_slots = employee.appointments.filter(date=date)
-    return [time_slot.strftime('%H:%M') for time_slot in available_time_slots]
+    formated_time_slots = []
+    if employee_id and date:
+        date = datetime.strptime(date, '%d.%m.%Y')
+        employee = get_object_or_404(Employee, pk=employee_id)
+        available_time_slots = employee.get_available_time(date)
+        formated_time_slots = [
+            time_slot.strftime('%H:%M') for time_slot in available_time_slots
+        ]
+    return JsonResponse({'available_time_slots': formated_time_slots})

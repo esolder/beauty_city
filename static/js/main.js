@@ -125,13 +125,46 @@ $(document).ready(function() {
 		$('#mobMenu').hide()
 	})
 
+	// datepicker
 	new AirDatepicker('#datepickerHere', {
 		toggleSelected: false,
-		onSelect(date){console.log(date.formattedDate)}
-	})
-	// $('#datepickerHere').click(function(){
-	// 	console.log($('#datepickerHere')[0].value);
-	// });
+		onSelect(date){
+			var selectedDate = date.formattedDate;
+			$.ajax({
+				url: '/booking/get-time/',
+				data: {
+					date: selectedDate,
+					employeeId: $('#masterId').text()
+				},
+				success: function(response) {
+					var morningContainer = $('.time__elems_intro:contains("Утро")').next('.time__elems_elem');
+					var dayContainer = $('.time__elems_intro:contains("День")').next('.time__elems_elem');
+					var eveningContainer = $('.time__elems_intro:contains("Вечер")').next('.time__elems_elem');
+
+					morningContainer.empty();
+					dayContainer.empty();
+					eveningContainer.empty();
+					
+					var timeSlotsContainer = $('.time__elems_elem');
+					timeSlotsContainer.empty();
+				  
+					for (var i = 0; i < response.available_time_slots.length; i++) {
+						var timeSlot = response.available_time_slots[i];
+						var timeSlotButton = '<button data-time="' + timeSlot + '" class="time__elems_btn">' + timeSlot + '</button>';
+						
+						if (timeSlot >= '06:00' && timeSlot < '12:00') {
+						  morningContainer.append(timeSlotButton);
+						} else if (timeSlot >= '12:00' && timeSlot < '17:00') {
+						  dayContainer.append(timeSlotButton);
+						} else {
+						  eveningContainer.append(timeSlotButton);
+						}
+					}
+				}
+			});
+		}
+	});
+	
 	
 	
 

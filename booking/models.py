@@ -96,7 +96,7 @@ class Employee(models.Model):
         current_time = start_time
 
         available_time_slots = []
-        while current_time < end_time:
+        while current_time <= end_time:
             if not appointments.filter(time=current_time.time()).exists():
                 available_time_slots.append(current_time.time())
             current_time += timedelta(minutes=30)

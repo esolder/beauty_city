@@ -42,6 +42,7 @@
                     </div>
                     <div class="accordion__block_master">{{ employee.first_name }} {{ employee.last_name }}</div>
                     <div class="accordion__block_prof">{{ employee.specialty }}</div>
+                    <div hidden id='masterId'>{{ employee.id }}</div>
                 </div>
               {% endfor %}
 						</div>
@@ -65,25 +66,19 @@
 								<div class="time__items">
 									<div class="time__elems_intro">Утро</div>
 									<div class="time__elems_elem fic">
-										<button data-time="10:00" class="time__elems_btn">10:00</button>
-										<button data-time="10:30" class="time__elems_btn">10:30</button>
+
 									</div>
 								</div>
 								<div class="time__items">
 									<div class="time__elems_intro">День</div>
 									<div class="time__elems_elem fic">
-										<button data-time="12:00" class="time__elems_btn">12:00</button>
-										<button data-time="12:30" class="time__elems_btn">12:30</button>
-										<button data-time="15:00" class="time__elems_btn">15:00</button>
-										<button data-time="16:30" class="time__elems_btn">16:30</button>
+
 									</div>
 								</div>
 								<div class="time__items">
 									<div class="time__elems_intro">Вечер</div>
 									<div class="time__elems_elem fic">
-										<button data-time="17:00" class="time__elems_btn">17:00</button>
-										<button data-time="18:30" class="time__elems_btn">18:30</button>
-										<button data-time="19:00" class="time__elems_btn">19:00</button>
+							
 									</div>
 								</div>
 							</div>
