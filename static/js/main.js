@@ -126,6 +126,11 @@ $(document).ready(function() {
 	})
 
 	new AirDatepicker('#datepickerHere')
+	$('#datepickerHere').click(function(){
+		console.log($('#datepickerHere')[0].value);
+	});
+	
+	
 
 	var acc = document.getElementsByClassName("accordion");
 	var i;

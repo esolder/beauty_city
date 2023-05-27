@@ -1,13 +1,22 @@
+from datetime import datetime
+
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.views.generic import TemplateView
-from .models import Review
+from .models import Review, Category, Employee
 
 
 class AppointmentView(TemplateView):
     template_name = 'service.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        categories = Category.objects.all()
+        employees = Employee.objects.all()
+        context = {
+            'categories': categories,
+            'employees': employees,
+        }
+        return render(request, self.template_name, context)
 
 
 class ServiceFinallyView(TemplateView):
@@ -39,10 +48,10 @@ class SubmitReview(TemplateView):
         return render(request, self.template_name, {'message': message})
 
 
-
-
-
-
-
-
-
+def get_time(request):
+    employee_id = request.GET.get('employee_id')
+    date = request.GET.get('date')
+    date = datetime.strptime(date, '%d.%m.%Y')
+    employee = Employee.objects.filter(pk=employee_id)
+    available_time_slots = employee.appointments.filter(date=date)
+    return [time_slot.strftime('%H:%M') for time_slot in available_time_slots]

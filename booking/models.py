@@ -1,5 +1,6 @@
-from datetime import date
+from datetime import date, datetime, time, timedelta
 from dateutil.relativedelta import relativedelta
+
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
@@ -43,6 +44,11 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+@receiver(pre_delete, sender=Service)
+def delete_photo(sender, instance, **kwargs):
+    instance.image.delete()
 
 
 class Specialty(models.Model):
@@ -81,6 +87,21 @@ class Employee(models.Model):
         years = experience_delta.years
         months = experience_delta.months
         return f'{years} г. {months} мес.'
+    
+    def get_available_time(self, date):
+        appointments = self.appointments.filter(date=date)
+        
+        start_time = datetime.combine(date, time(10, 0))
+        end_time = datetime.combine(date, time(19, 0))
+        current_time = start_time
+
+        available_time_slots = []
+        while current_time < end_time:
+            if not appointments.filter(time=current_time.time()).exists():
+                available_time_slots.append(current_time.time())
+            current_time += timedelta(minutes=30)
+        
+        return available_time_slots
     
 
 @receiver(pre_delete, sender=Employee)
