@@ -125,10 +125,13 @@ $(document).ready(function() {
 		$('#mobMenu').hide()
 	})
 
-	new AirDatepicker('#datepickerHere')
-	$('#datepickerHere').click(function(){
-		console.log($('#datepickerHere')[0].value);
-	});
+	new AirDatepicker('#datepickerHere', {
+		toggleSelected: false,
+		onSelect(date){console.log(date.formattedDate)}
+	})
+	// $('#datepickerHere').click(function(){
+	// 	console.log($('#datepickerHere')[0].value);
+	// });
 	
 	
 
