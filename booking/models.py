@@ -8,7 +8,10 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Category(models.Model):
-    name = models.CharField('Категория', max_length=100)
+    name = models.CharField(
+        'Категория',
+        max_length=100,
+    )
 
     class Meta:
         verbose_name = 'Категория услуги'
@@ -19,7 +22,10 @@ class Category(models.Model):
 
 
 class Service(models.Model):
-    name = models.CharField('Название услуги', max_length=100)
+    name = models.CharField(
+        'Название услуги',
+        max_length=100,
+    )
     category = models.ForeignKey(
         Category,
         on_delete=models.PROTECT,
@@ -37,14 +43,13 @@ class Service(models.Model):
         blank=True,
     )
 
-
     class Meta:
         verbose_name = 'Услуга'
         verbose_name_plural = 'Услуги'
 
     def __str__(self):
         return self.name
-    
+
 
 @receiver(pre_delete, sender=Service)
 def delete_photo(sender, instance, **kwargs):
@@ -63,16 +68,27 @@ class Specialty(models.Model):
 
 
 class Employee(models.Model):
-    first_name = models.CharField('Имя', max_length=50)
-    last_name = models.CharField('Фамилия', max_length=50)
+    first_name = models.CharField(
+        'Имя',
+        max_length=50,
+    )
+    last_name = models.CharField(
+        'Фамилия',
+        max_length=50,
+    )
     specialty = models.ForeignKey(
         Specialty,
         on_delete=models.PROTECT,
         related_name='employees',
         verbose_name='Специальность',
     )
-    start_work_date = models.DateField('Дата начала работы')
-    photo = models.ImageField('Фото', blank=True)
+    start_work_date = models.DateField(
+        'Дата начала работы',
+    )
+    photo = models.ImageField(
+        'Фото',
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Сотрудник'
@@ -87,10 +103,10 @@ class Employee(models.Model):
         years = experience_delta.years
         months = experience_delta.months
         return f'{years} г. {months} мес.'
-    
+
     def get_available_time(self, date):
         appointments = self.appointments.filter(date=date)
-        
+
         start_time = datetime.combine(date, time(10, 0))
         end_time = datetime.combine(date, time(19, 0))
         current_time = start_time
@@ -100,9 +116,9 @@ class Employee(models.Model):
             if not appointments.filter(time=current_time.time()).exists():
                 available_time_slots.append(current_time.time())
             current_time += timedelta(minutes=30)
-        
+
         return available_time_slots
-    
+
 
 @receiver(pre_delete, sender=Employee)
 def delete_photo(sender, instance, **kwargs):
@@ -115,18 +131,39 @@ class Appointment(models.Model):
         on_delete=models.PROTECT,
         related_name='appointments',
         verbose_name='Услуга',
+        blank=True,
+        null=True,
     )
     employee = models.ForeignKey(
         Employee,
         on_delete=models.PROTECT,
         related_name='appointments',
         verbose_name='Сотрудник',
+        blank=True,
+        null=True,
     )
-    date = models.DateField('Дата записи')
-    time = models.TimeField('Время записи')
-    name = models.CharField('Имя клиента', max_length=100)
-    phonenumber = PhoneNumberField('Телефон клиента', max_length=20)
-    comment = models.TextField('Комментарий клиента', blank=True)
+    date = models.DateField(
+        'Дата записи',
+        blank=True,
+        null=True,
+    )
+    time = models.TimeField(
+        'Время записи',
+        blank=True,
+        null=True,
+    )
+    name = models.CharField(
+        'Имя клиента',
+        max_length=100,
+    )
+    phonenumber = PhoneNumberField(
+        'Телефон клиента',
+        max_length=20,
+    )
+    comment = models.TextField(
+        'Комментарий клиента',
+        blank=True,
+    )
 
     class Meta:
         ordering = ['-date', '-time']
@@ -143,7 +180,9 @@ class Review(models.Model):
         'Имя сотрудника',
         max_length=100
     )
-    rating = models.IntegerField(verbose_name='Оценка')
+    rating = models.IntegerField(
+        verbose_name='Оценка',
+    )
     text = models.TextField(
         verbose_name='Текст отзыва',
         null=False,
