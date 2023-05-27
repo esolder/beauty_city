@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+	<title>Чаевые</title>
+	<style>
+		.tipspopup, .paymentpopup { display: none; }
+		.active { display: block; }
+	</style>
+</head>
+<body>
+	<div id="tipsPopup" class="tipspopup active">
+		<div class="popup__title tipsPopup__title">Чаевые</div>
+		<form id="tipsForm" class="tipsPopup__form">
+			<div class="tipsPopup__form_intro popup__intro">Введите сумму чаевых</div>
+			<input type="text" id="tipsAmount" class="tipsPopup__form_input popup__input" placeholder="0.00" required>
+			<button class="tipsPopup__btn popup__btn" type="button" onclick="showPaymentForm()">Далее</button>
+		</form>
+	</div>
+
+	<div id="paymentPopup" class="paymentpopup">
+		<div class="popup__title paymentPopup__title">Оплата</div>
+		<form id="paymentForm" class="paymentPopup__form">
+			<div class="paymentPopup__form_intro popup__intro">номер карты</div>
+			<input type="text" name="tel" class="paymentPopup__form_input popup__input" placeholder="Введите номер" required>
+			<div class="paymentPopup__form_block fic">
+				<input type="text" name="mm" class="tipsPopup__form_inputMin popup__input" placeholder="ММ" required>
+				<input type="text" name="gg" class="tipsPopup__form_inputMin popup__input" placeholder="ГГ" required>
+			</div>
+			<div class="paymentPopup__form_elems fic">
+				<input type="text" name="fname" class="paymentPopup__form_inputMid popup__input" placeholder="Имя владельца" required>
+				<input type="text" name="cvc" class="tipsPopup__form_inputMin popup__input" placeholder="CVC" required>
+			</div>
+			<div class="paymentPopup__form_intro popup__intro">Ваш e-mail(необязательно)</div>
+			<input type="email" name="tel" class="paymentPopup__form_input popup__input" placeholder="pochta@mail.ru">
+			<button class="tipsPopup__btn popup__btn" type="button" onclick="thankUser()">Оплатить</button>
+		</form>
+	</div>
+
+	<script>
+		function showPaymentForm() {
+			document.getElementById('tipsPopup').classList.remove('active');
+			document.getElementById('paymentPopup').classList.add('active');
+		}
+
+		function thankUser() {
+			alert('Спасибо за оставленные чаевые!');
+		}
+	</script>
+
+</body>
+{% endblock %}
+

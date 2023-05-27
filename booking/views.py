@@ -48,6 +48,13 @@ class SubmitReview(TemplateView):
         return render(request, self.template_name, {'message': message})
 
 
+class TipsView(TemplateView):
+    template_name = 'tips.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+
 def get_time(request):
     employee_id = request.GET.get('employeeId')
     date = request.GET.get('date')
