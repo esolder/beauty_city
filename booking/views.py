@@ -73,7 +73,8 @@ def get_time(request):
         date = datetime.strptime(date, '%d.%m.%Y')
         employee = get_object_or_404(Employee, pk=employee_id)
         available_time_slots = employee.get_available_time(date)
-        formated_time_slots = [
-            time_slot.strftime('%H:%M') for time_slot in available_time_slots
-        ]
+        formated_time_slots = []
+        for time_slot in available_time_slots:
+            if time_slot > datetime.now().time() or date > datetime.now():
+                formated_time_slots.append(time_slot.strftime('%H:%M'))  
     return JsonResponse({'available_time_slots': formated_time_slots})

@@ -125,48 +125,6 @@ $(document).ready(function() {
 		$('#mobMenu').hide()
 	})
 
-	// datepicker
-	new AirDatepicker('#datepickerHere', {
-		toggleSelected: false,
-		onSelect(date){
-			var selectedDate = date.formattedDate;
-			$.ajax({
-				url: '/booking/get-time/',
-				data: {
-					date: selectedDate,
-					employeeId: $('#masterId').text()
-				},
-				success: function(response) {
-					var morningContainer = $('.time__elems_intro:contains("Утро")').next('.time__elems_elem');
-					var dayContainer = $('.time__elems_intro:contains("День")').next('.time__elems_elem');
-					var eveningContainer = $('.time__elems_intro:contains("Вечер")').next('.time__elems_elem');
-
-					morningContainer.empty();
-					dayContainer.empty();
-					eveningContainer.empty();
-					
-					var timeSlotsContainer = $('.time__elems_elem');
-					timeSlotsContainer.empty();
-				  
-					for (var i = 0; i < response.available_time_slots.length; i++) {
-						var timeSlot = response.available_time_slots[i];
-						var timeSlotButton = '<button data-time="' + timeSlot + '" class="time__elems_btn">' + timeSlot + '</button>';
-						
-						if (timeSlot >= '06:00' && timeSlot < '12:00') {
-						  morningContainer.append(timeSlotButton);
-						} else if (timeSlot >= '12:00' && timeSlot < '17:00') {
-						  dayContainer.append(timeSlotButton);
-						} else {
-						  eveningContainer.append(timeSlotButton);
-						}
-					}
-				}
-			});
-		}
-	});
-	
-	
-	
 
 	var acc = document.getElementsByClassName("accordion");
 	var i;
@@ -386,6 +344,7 @@ $(document).ready(function() {
 
 	$(document).on('click', '.service__masters .accordion__block', function(e) {
 		let clone = $(this).clone()
+		clone.addClass('selected-master')
 		console.log(clone)
 		$(this).parent().parent().find('> button.active').html(clone)
 	})
@@ -489,9 +448,49 @@ $(document).ready(function() {
       window.location.href = $(this).attr('href');
     });
 
+	// datepicker
+	new AirDatepicker('#datepickerHere', {
+		toggleSelected: false,
+		minDate: new Date(),
+		onSelect(date){
+			var selectedDate = date.formattedDate;
+			$.ajax({
+				url: '/booking/get-time/',
+				data: {
+					date: selectedDate,
+					employeeId: $('.selected-master #masterId').text()
+				},
+				success: function(response) {
+					var morningContainer = $('.time__elems_intro:contains("Утро")').next('.time__elems_elem');
+					var dayContainer = $('.time__elems_intro:contains("День")').next('.time__elems_elem');
+					var eveningContainer = $('.time__elems_intro:contains("Вечер")').next('.time__elems_elem');
+
+					morningContainer.empty();
+					dayContainer.empty();
+					eveningContainer.empty();
+					
+					var timeSlotsContainer = $('.time__elems_elem');
+					timeSlotsContainer.empty();
+				  
+					for (var i = 0; i < response.available_time_slots.length; i++) {
+						var timeSlot = response.available_time_slots[i];
+						var timeSlotButton = '<button data-time="' + timeSlot + '" class="time__elems_btn">' + timeSlot + '</button>';
+						
+						if (timeSlot >= '06:00' && timeSlot < '12:00') {
+						  morningContainer.append(timeSlotButton);
+						} else if (timeSlot >= '12:00' && timeSlot < '17:00') {
+						  dayContainer.append(timeSlotButton);
+						} else {
+						  eveningContainer.append(timeSlotButton);
+						}
+					}
+				}
+			});
+		}
+	});
 
 	//service
-	$('.time__items .time__elems_elem .time__elems_btn').click(function(e) {
+	$('.time__items .time__elems_elem').on('click', '.time__elems_btn', function(e) {
 		e.preventDefault()
 		$('.time__elems_btn').removeClass('active')
 		$(this).addClass('active')
