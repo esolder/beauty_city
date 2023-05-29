@@ -63,8 +63,6 @@ class ServiceFinallyView(TemplateView):
             'comment': request.POST.get('comment'),
         }
 
-        if not re.match(r'^[а-яА-Я\s]*$', data['name']):
-            return JsonResponse({'errors': 'Имя может содержать только буквы и пробелы'}, status=400)
 
         if not re.match(r'^\+7\d{10}$', data['phonenumber']):
             return JsonResponse({'errors': 'Номер телефона должен быть в формате: "+7xxxxxxxxxx"'}, status=400)
