@@ -351,13 +351,44 @@ $(document).ready(function() {
 		thisId = console.log(clone.find('> .masterId').text())
 		$(this).parent().parent().find('> button.active').html(clone).attr('id', thisId)
 		
-		var timeSlotsContainer = $('.time__elems_elem');
-		timeSlotsContainer.empty();
-		if(!$('.time__items .time__elems_elem .time__elems_btn').hasClass('active')) {
-			$('.time__btns_next').attr('disabled', '');
-			$('.time__btns_next').removeClass('active');
-		};
-		
+		date = $('#datepickerHere').val()
+		console.log(date)
+			var selectedDate = date;
+			var timeSlotsContainer = $('.time__elems_elem');
+			timeSlotsContainer.empty();
+			if(!$('.time__items .time__elems_elem .time__elems_btn').hasClass('active')) {
+				$('.time__btns_next').attr('disabled', '');
+				$('.time__btns_next').removeClass('active');
+			};
+			$.ajax({
+				url: '/booking/get-time/',
+				data: {
+					date: selectedDate,
+					employeeId: $('.selected-master #masterId').text()
+				},
+				success: function(response) {
+					var morningContainer = $('.time__elems_intro:contains("Утро")').next('.time__elems_elem');
+					var dayContainer = $('.time__elems_intro:contains("День")').next('.time__elems_elem');
+					var eveningContainer = $('.time__elems_intro:contains("Вечер")').next('.time__elems_elem');
+
+					morningContainer.empty();
+					dayContainer.empty();
+					eveningContainer.empty();
+					
+					for (var i = 0; i < response.available_time_slots.length; i++) {
+						var timeSlot = response.available_time_slots[i];
+						var timeSlotButton = '<button data-time="' + timeSlot + '" class="time__elems_btn">' + timeSlot + '</button>';
+						
+						if (timeSlot >= '06:00' && timeSlot < '12:00') {
+						  morningContainer.append(timeSlotButton);
+						} else if (timeSlot >= '12:00' && timeSlot < '17:00') {
+						  dayContainer.append(timeSlotButton);
+						} else {
+						  eveningContainer.append(timeSlotButton);
+						}
+					}
+				}
+			});
 	})
 
 	// $('.accordion__block_item').click(function(e) {
@@ -464,6 +495,7 @@ $(document).ready(function() {
 		toggleSelected: false,
 		minDate: new Date(),
 		onSelect(date){
+			console.log(date.formattedDate)
 			var selectedDate = date.formattedDate;
 			var timeSlotsContainer = $('.time__elems_elem');
 			timeSlotsContainer.empty();
