@@ -350,6 +350,14 @@ $(document).ready(function() {
 		clone.addClass('selected-master')
 		thisId = console.log(clone.find('> .masterId').text())
 		$(this).parent().parent().find('> button.active').html(clone).attr('id', thisId)
+		
+		var timeSlotsContainer = $('.time__elems_elem');
+		timeSlotsContainer.empty();
+		if(!$('.time__items .time__elems_elem .time__elems_btn').hasClass('active')) {
+			$('.time__btns_next').attr('disabled', '');
+			$('.time__btns_next').removeClass('active');
+		};
+		
 	})
 
 	// $('.accordion__block_item').click(function(e) {
@@ -457,6 +465,12 @@ $(document).ready(function() {
 		minDate: new Date(),
 		onSelect(date){
 			var selectedDate = date.formattedDate;
+			var timeSlotsContainer = $('.time__elems_elem');
+			timeSlotsContainer.empty();
+			if(!$('.time__items .time__elems_elem .time__elems_btn').hasClass('active')) {
+				$('.time__btns_next').attr('disabled', '');
+				$('.time__btns_next').removeClass('active');
+			};
 			$.ajax({
 				url: '/booking/get-time/',
 				data: {
@@ -472,9 +486,6 @@ $(document).ready(function() {
 					dayContainer.empty();
 					eveningContainer.empty();
 					
-					var timeSlotsContainer = $('.time__elems_elem');
-					timeSlotsContainer.empty();
-				  
 					for (var i = 0; i < response.available_time_slots.length; i++) {
 						var timeSlot = response.available_time_slots[i];
 						var timeSlotButton = '<button data-time="' + timeSlot + '" class="time__elems_btn">' + timeSlot + '</button>';
@@ -497,12 +508,15 @@ $(document).ready(function() {
 		e.preventDefault()
 		$('.time__elems_btn').removeClass('active')
 		$(this).addClass('active')
+		$('.time__btns_next').removeAttr('disabled')
+		$('.time__btns_next').addClass('active')
 		// $(this).hasClass('active') ? $(this).removeClass('active') : $(this).addClass('active')
 	})
 
-	$(document).on('click', '.servicePage', function() {
-		if($('.time__items .time__elems_elem .time__elems_btn').hasClass('active') && $('.service__form_block > button').hasClass('selected')) {
-			$('.time__btns_next').addClass('active')
+	$(document).on('click', '.main', function() {
+		if(!$('.time__items .time__elems_elem .time__elems_btn').hasClass('active')) {
+			$('.time__btns_next').attr('disabled', '')
+			$('.time__btns_next').removeClass('active')
 		}
 	})
 

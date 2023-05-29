@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<main class="main">
 	<section id="service">
 		<div class="container">
 			<div class="service">
@@ -92,7 +93,7 @@
 				<div class="time__btns">
 					<div class="row">
 						<div class="col-md-12">
-							<button class="time__btns_next">Далее</button>
+							<button class="time__btns_next" disabled>Далее</button>
 							<a href="/"><button  class="time__btns_home">На главную</button></a>
 						</div>
 					</div>
@@ -100,4 +101,5 @@
 			</div>
 		</div>
 	</section>
+</main>
 {% endblock %}

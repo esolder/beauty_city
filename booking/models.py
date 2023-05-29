@@ -131,26 +131,18 @@ class Appointment(models.Model):
         on_delete=models.PROTECT,
         related_name='appointments',
         verbose_name='Услуга',
-        blank=True,
-        null=True,
     )
     employee = models.ForeignKey(
         Employee,
         on_delete=models.PROTECT,
         related_name='appointments',
         verbose_name='Сотрудник',
-        blank=True,
-        null=True,
     )
     date = models.DateField(
         'Дата записи',
-        blank=True,
-        null=True,
     )
     time = models.TimeField(
         'Время записи',
-        blank=True,
-        null=True,
     )
     name = models.CharField(
         'Имя клиента',
@@ -166,6 +158,7 @@ class Appointment(models.Model):
     )
 
     class Meta:
+        unique_together = [['date', 'time', 'employee']]
         ordering = ['-date', '-time']
         verbose_name = 'Запись'
         verbose_name_plural = 'Записи'
