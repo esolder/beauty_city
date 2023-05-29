@@ -114,6 +114,9 @@ class ServiceSuccessView(TemplateView):
             'date': cache.get('date'),
             'time': cache.get('time'),
         }
+        cache.delete('name')
+        cache.delete('date')
+        cache.delete('time')
         return render(request, self.template_name, context)
 
 
