@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/submit_review/', views.submit_review, name='submit_review'),
     path('get-time/', views.get_time, name='get_time'),
     path('tips/', views.TipsView.as_view(), name='tips'),
+    path('service-success/', views.ServiceSuccessView.as_view(), name='serviceSuccess'),
 ]

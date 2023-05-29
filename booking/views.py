@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.core.cache import cache
-from django.http import JsonResponse
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 
@@ -9,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.urls import reverse
-from .models import Review, Category, Employee, Appointment, Service
+from .models import Category, Employee, Service
 from .serializers import AppointmentSerializer, ReviewSerializer
 
 
@@ -66,7 +65,10 @@ class ServiceFinallyView(TemplateView):
 
         if serializer.is_valid():
             serializer.save()
-            return render(request, self.template_name)
+            cache.set('name', data['name'])
+            cache.set('date', data['date'])
+            cache.set('time', data['time'])
+            return redirect('serviceSuccess')
         else:
             return JsonResponse({'errors': serializer.errors}, status=400)
 
@@ -101,6 +103,18 @@ class TipsView(TemplateView):
 
     def get(self, request):
         return render(request, self.template_name)
+
+
+class ServiceSuccessView(TemplateView):
+    template_name = 'servicesuccess.html'
+
+    def get(self, request):
+        context = {
+            'name': cache.get('name'),
+            'date': cache.get('date'),
+            'time': cache.get('time'),
+        }
+        return render(request, self.template_name, context)
 
 
 def get_time(request):

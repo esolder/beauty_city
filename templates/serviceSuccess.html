@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+<section id="ServiceSuccess">
+    <div class="container">
+        <div class="serviceSuccess">
+            <h1>Спасибо за запись!</h1>
+            <p>До встречи {{ name }}! Ждем вас {{ date }} в {{ time }} по адресу ул. Красная д.10</p>
+            <a href="{% url 'index' %}">На главную</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
