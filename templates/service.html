@@ -12,8 +12,8 @@
 					<button class="service__btn btn">Запись по телефону</button>
 				</div>
 				
-				<form action="#" class="service__form">
-					
+				<form action="{% url 'appointment' %}" class="service__form" method="POST">
+					{% csrf_token %}
 					<div class="service__form_block service__services">
 						<button class="accordion">(Выберите услугу)</button>
 						<div class="panel">
@@ -35,19 +35,22 @@
 					<div class="service__form_block service__masters">
 						<button class="accordion">(Выберите мастера)</button>
 						<div class="panel">
-						  {% for employee in employees %}
-                <div class="accordion__block fic">
-                    <div class="accordion__block_elems fic">
-                      <img class="accordion__block_img" src="{{ employee.photo.url}}" alt="avatar">
-                    </div>
-                    <div class="accordion__block_master">{{ employee.first_name }} {{ employee.last_name }}</div>
-                    <div class="accordion__block_prof">{{ employee.specialty }}</div>
-                    <div hidden id='masterId'>{{ employee.id }}</div>
-                </div>
-              {% endfor %}
+						  	{% for employee in employees %}
+								<div class="accordion__block fic">
+									<div class="accordion__block_elems fic">
+									<img class="accordion__block_img" src="{{ employee.photo.url}}" alt="avatar">
+									</div>
+									<div class="accordion__block_master">{{ employee.first_name }} {{ employee.last_name }}</div>
+									<div class="accordion__block_prof">{{ employee.specialty }}</div>
+									<div hidden id='masterId'>{{ employee.id }}</div>
+								</div>
+							{% endfor %}
 						</div>
 					</div>
-					
+					<input type="hidden" name="service" id="service-input">
+					<input type="hidden" name="employee" id="employee-input">
+					<input type="hidden" name="date" id="date-input">
+					<input type="hidden" name="time" id="time-input">	
 				</form>
 			</div>
 		</div>
@@ -88,7 +91,7 @@
 				<div class="time__btns">
 					<div class="row">
 						<div class="col-md-12">
-							<a href="{% url 'serviceFinally' %}"><button class="time__btns_next">Далее</button></a>
+							<button class="time__btns_next">Далее</button>
 							<a href="/"><button  class="time__btns_home">На главную</button></a>
 						</div>
 					</div>

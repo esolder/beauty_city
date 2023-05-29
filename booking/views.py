@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
@@ -18,6 +18,18 @@ class AppointmentView(TemplateView):
         }
         return render(request, self.template_name, context)
 
+    def post(self, request):
+        service = request.POST.get('service')
+        employee = request.POST.get('employee')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        redirect(
+            ServiceFinallyView.get(
+            service=service,
+            employee=employee,
+            date=date,
+            time=time,)
+        )
 
 class ServiceFinallyView(TemplateView):
     template_name = 'serviceFinally.html'

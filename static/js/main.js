@@ -503,4 +503,23 @@ $(document).ready(function() {
 		}
 	})
 
+	function setFormValues(selectedService, selectedEmployee, selectedDate, selectedTime) {
+		$('#service-input').val(selectedService);
+		$('#employee-input').val(selectedEmployee);
+		$('#date-input').val(selectedDate);
+		$('#time-input').val(selectedTime);
+	}
+
+	$('.time__btns_next').on('click', function(e) {
+		e.preventDefault()
+
+		var selectedService = $('.accordion__block_items .accordion__block_item.active .accordion__block_item_intro').text();
+		var selectedEmployee = $('.selected-master .accordion__block_master').text();
+		var selectedDate = $('#datepickerHere').val();
+		var selectedTime = $('.time__elems_btn.active').data('time');
+	  
+		setFormValues(selectedService, selectedEmployee, selectedDate, selectedTime);
+	  
+		$('.service__form').submit();
+	  });
 })
