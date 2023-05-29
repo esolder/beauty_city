@@ -73,4 +73,16 @@
         </div>
     </form>
 </section>
+<script>
+    document.getElementById('serviceFinallyForm').addEventListener('submit', function(event) {
+        var phoneNumberInput = document.getElementsByName('phonenumber')[0];
+        var phoneNumber = phoneNumberInput.value;
+        var regex = /^\+7\d{10}$/;
+
+        if (!regex.test(phoneNumber)) {
+            alert('Неправильно введенные данные');
+            event.preventDefault();
+        }
+    });
+</script>
 {% endblock %}

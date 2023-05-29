@@ -1,10 +1,16 @@
 from datetime import datetime
 from django.core.cache import cache
-from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from django.urls import reverse
 from .models import Review, Category, Employee, Appointment, Service
+from .serializers import AppointmentSerializer, ReviewSerializer
 
 
 class AppointmentView(TemplateView):
@@ -29,7 +35,7 @@ class AppointmentView(TemplateView):
         cache.set('date', date)
         cache.set('time', time)
         return redirect('serviceFinally')
-    
+
 
 class ServiceFinallyView(TemplateView):
     template_name = 'serviceFinally.html'
@@ -44,48 +50,50 @@ class ServiceFinallyView(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        service = get_object_or_404(Service, pk=cache.get('service_id'))
-        employee = get_object_or_404(Employee, pk=cache.get('employee_id'))
-        date = datetime.strptime(cache.get('date'), '%d.%m.%Y')
-        time = cache.get('time')
-        name = request.POST.get('name')
-        phonenumber = request.POST.get('phonenumber')
-        comment = request.POST.get('comment')
+        date = datetime.strptime(cache.get('date'), '%d.%m.%Y').date()
 
-        appointment = Appointment(
-            service=service,
-            employee=employee,
-            date=date,
-            time=time,
-            name=name,
-            phonenumber=phonenumber,
-            comment=comment,
-        )
-        appointment.save()
+        data = {
+            'service': cache.get('service_id'),
+            'employee': cache.get('employee_id'),
+            'date': date.isoformat(),
+            'time': cache.get('time'),
+            'name': request.POST.get('name'),
+            'phonenumber': request.POST.get('phonenumber'),
+            'comment': request.POST.get('comment'),
+        }
 
-        return render(request, self.template_name)
+        serializer = AppointmentSerializer(data=data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return render(request, self.template_name)
+        else:
+            return JsonResponse({'errors': serializer.errors}, status=400)
+
+
+@api_view(['POST'])
+def submit_appointment(request):
+    serializer = AppointmentSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
 
 
 class SubmitReview(TemplateView):
     template_name = 'reviews.html'
 
-    def post(self, request):
-        name = request.POST.get('name')
-        employee = request.POST.get('employee')
-        rating = request.POST.get('rating')
-        review_text = request.POST.get('review')
+    def get(self, request):
+        return render(request, self.template_name)
 
-        review = Review.objects.create(
-            name=name,
-            employee=employee,
-            rating=rating,
-            text=review_text
-        )
 
-        review.save()
-
-        message = 'Спасибо за оставленный отзыв!'
-        return render(request, self.template_name, {'message': message})
+@api_view(['POST'])
+def submit_review(request):
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return HttpResponseRedirect(reverse('reviews'))
+    return Response(serializer.errors, status=400)
 
 
 class TipsView(TemplateView):
