@@ -1,15 +1,14 @@
+import re
+
 from datetime import datetime
 from django.core.cache import cache
-from django.http import JsonResponse, HttpResponseRedirect
+from django.core.exceptions import ValidationError
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-from django.urls import reverse
-from .models import Category, Employee, Service
-from .serializers import AppointmentSerializer, ReviewSerializer
+from .models import Category, Employee, Service, Appointment, Review
 
 
 class AppointmentView(TemplateView):
@@ -51,9 +50,12 @@ class ServiceFinallyView(TemplateView):
     def post(self, request):
         date = datetime.strptime(cache.get('date'), '%d.%m.%Y').date()
 
+        service = get_object_or_404(Service, pk=cache.get('service_id'))
+        employee = get_object_or_404(Employee, pk=cache.get('employee_id'))
+
         data = {
-            'service': cache.get('service_id'),
-            'employee': cache.get('employee_id'),
+            'service': service,
+            'employee': employee,
             'date': date.isoformat(),
             'time': cache.get('time'),
             'name': request.POST.get('name'),
@@ -61,41 +63,71 @@ class ServiceFinallyView(TemplateView):
             'comment': request.POST.get('comment'),
         }
 
-        serializer = AppointmentSerializer(data=data)
+        if not re.match(r'^[а-яА-Я\s]*$', data['name']):
+            return JsonResponse({'errors': 'Имя может содержать только буквы и пробелы'}, status=400)
 
-        if serializer.is_valid():
-            serializer.save()
-            cache.set('name', data['name'])
-            cache.set('date', data['date'])
-            cache.set('time', data['time'])
-            return redirect('serviceSuccess')
-        else:
-            return JsonResponse({'errors': serializer.errors}, status=400)
+        if not re.match(r'^\+7\d{10}$', data['phonenumber']):
+            return JsonResponse({'errors': 'Номер телефона должен быть в формате: "+7xxxxxxxxxx"'}, status=400)
+
+        try:
+            appointment = Appointment.objects.create(**data)
+            appointment.full_clean()
+        except ValidationError as e:
+            return JsonResponse({'errors': str(e)}, status=400)
+
+        cache.set('name', data['name'])
+        cache.set('date', data['date'])
+        cache.set('time', data['time'])
+
+        return redirect('serviceSuccess')
 
 
-@api_view(['POST'])
+@csrf_exempt
 def submit_appointment(request):
-    serializer = AppointmentSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+    if request.method == 'POST':
+        data = request.POST
+
+        if not re.match(r'^[а-яА-Я\s]*$', data['name']):
+            return JsonResponse({'errors': 'Имя может содержать только буквы и пробелы'}, status=400)
+
+        if not re.match(r'^\+7\d{10}$', data['phonenumber']):
+            return JsonResponse({'errors': 'Номер телефона должен быть в формате: "+7xxxxxxxxxx"'}, status=400)
+
+        service = get_object_or_404(Service, pk=data.get('service'))
+        employee = get_object_or_404(Employee, pk=data.get('employee'))
+
+        data['service'] = service
+        data['employee'] = employee
+
+        try:
+            appointment = Appointment.objects.create(**data)
+            appointment.full_clean()
+        except ValidationError as e:
+            return JsonResponse({'errors': str(e)}, status=400)
+
+        return JsonResponse(appointment, status=201)
+    else:
+        return JsonResponse({'errors': 'Некорректный запрос'}, status=400)
 
 
 class SubmitReview(TemplateView):
     template_name = 'reviews.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def post(self, request):
+        name = request.POST.get('name')
+        employee = request.POST.get('employee')
+        rating = request.POST.get('rating')
+        review_text = request.POST.get('review')
 
+        Review.objects.create(
+            name=name,
+            employee=employee,
+            rating=rating,
+            text=review_text
+        )
 
-@api_view(['POST'])
-def submit_review(request):
-    serializer = ReviewSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return HttpResponseRedirect(reverse('reviews'))
-    return Response(serializer.errors, status=400)
+        message = 'Спасибо за оставленный отзыв!'
+        return render(request, self.template_name, {'message': message})
 
 
 class TipsView(TemplateView):
@@ -131,5 +163,5 @@ def get_time(request):
         formated_time_slots = []
         for time_slot in available_time_slots:
             if time_slot > datetime.now().time() or date > datetime.now():
-                formated_time_slots.append(time_slot.strftime('%H:%M'))  
+                formated_time_slots.append(time_slot.strftime('%H:%M'))
     return JsonResponse({'available_time_slots': formated_time_slots})
