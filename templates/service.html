@@ -25,6 +25,7 @@
 											<div class="accordion__block_item fic">
 												<div class="accordion__block_item_intro">{{ service.name }}</div>
 												<div class="accordion__block_item_address">{{ service.price }} ₽</div>
+												<div hidden class="accordion__block_item_id">{{ service.id }}</div>
 											</div>
 										</div>
 									{% endfor %}
@@ -42,7 +43,7 @@
 									</div>
 									<div class="accordion__block_master">{{ employee.first_name }} {{ employee.last_name }}</div>
 									<div class="accordion__block_prof">{{ employee.specialty }}</div>
-									<div hidden id='masterId'>{{ employee.id }}</div>
+									<div hidden id="masterId" class='masterId'>{{ employee.id }}</div>
 								</div>
 							{% endfor %}
 						</div>

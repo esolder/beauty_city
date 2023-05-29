@@ -327,7 +327,10 @@ $(document).ready(function() {
 		let thisName,thisAddress;
 		thisName = $(this).find('> .accordion__block_item_intro').text()
 		thisAddress = $(this).find('> .accordion__block_item_address').text()
+		thisId = $(this).find('> .accordion__block_item_id').text()
+		console.log(thisId)
 		$(this).parent().parent().parent().parent().find('> button.active').addClass('selected').text(thisName + '  ' +thisAddress)
+		$(this).parent().parent().parent().parent().find('> button.active').attr('id', thisId)
 		// $(this).parent().parent().parent().parent().find('> button.active').click()
 		// $(this).parent().parent().parent().addClass('hide')
 		setTimeout(() => {
@@ -345,8 +348,8 @@ $(document).ready(function() {
 	$(document).on('click', '.service__masters .accordion__block', function(e) {
 		let clone = $(this).clone()
 		clone.addClass('selected-master')
-		console.log(clone)
-		$(this).parent().parent().find('> button.active').html(clone)
+		thisId = console.log(clone.find('> .masterId').text())
+		$(this).parent().parent().find('> button.active').html(clone).attr('id', thisId)
 	})
 
 	// $('.accordion__block_item').click(function(e) {
@@ -513,13 +516,13 @@ $(document).ready(function() {
 	$('.time__btns_next').on('click', function(e) {
 		e.preventDefault()
 
-		var selectedService = $('.accordion__block_items .accordion__block_item.active .accordion__block_item_intro').text();
-		var selectedEmployee = $('.selected-master .accordion__block_master').text();
+		var selectedService = $('.service__services button.selected').attr('id');
+		var selectedEmployee = $('.selected-master .masterId').text();
 		var selectedDate = $('#datepickerHere').val();
 		var selectedTime = $('.time__elems_btn.active').data('time');
 	  
 		setFormValues(selectedService, selectedEmployee, selectedDate, selectedTime);
 	  
-		$('.service__form').submit();
+		$('.service__form').closest('form').submit();
 	  });
 })
